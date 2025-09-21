@@ -41,6 +41,7 @@ function render(tasks = state.tasks) {
     delBtn.className = 'icon danger';
     delBtn.textContent = 'Excluir';
     delBtn.addEventListener('click', () => {
+      if (!confirm('Excluir esta tarefa?')) return;
       const id = li.dataset.id;
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx >= 0) {
