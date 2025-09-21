@@ -40,6 +40,7 @@ function render(tasks = state.tasks) {
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx < 0) return;
       const current = state.tasks[idx];
+      if (current.completed) return; // não editar concluída
       const input = document.createElement('input');
       input.className = 'edit-input';
       input.value = current.title;
