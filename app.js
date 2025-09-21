@@ -35,7 +35,33 @@ function render(tasks = state.tasks) {
     const editBtn = document.createElement('button');
     editBtn.className = 'icon';
     editBtn.textContent = 'Editar';
-    editBtn.disabled = true; // habilitado na feature correspondente
+    editBtn.addEventListener('click', () => {
+      const id = li.dataset.id;
+      const idx = state.tasks.findIndex(x => x.id === id);
+      if (idx < 0) return;
+      const current = state.tasks[idx];
+      const input = document.createElement('input');
+      input.className = 'edit-input';
+      input.value = current.title;
+      input.setAttribute('aria-label', 'Editar tarefa');
+      const save = () => {
+        const v = input.value.trim();
+        if (v) {
+          state.tasks[idx].title = v;
+          render();
+        } else {
+          render();
+        }
+      };
+      input.addEventListener('blur', save);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') save();
+        if (e.key === 'Escape') render();
+      });
+      title.replaceWith(input);
+      input.focus();
+      input.select();
+    });
 
     const delBtn = document.createElement('button');
     delBtn.className = 'icon danger';
