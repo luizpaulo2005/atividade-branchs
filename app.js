@@ -40,7 +40,14 @@ function render(tasks = state.tasks) {
     const delBtn = document.createElement('button');
     delBtn.className = 'icon danger';
     delBtn.textContent = 'Excluir';
-    delBtn.disabled = true; // habilitado na feature correspondente
+    delBtn.addEventListener('click', () => {
+      const id = li.dataset.id;
+      const idx = state.tasks.findIndex(x => x.id === id);
+      if (idx >= 0) {
+        state.tasks.splice(idx, 1);
+        li.remove();
+      }
+    });
 
     actions.append(editBtn, delBtn);
     li.append(checkbox, title, actions);
