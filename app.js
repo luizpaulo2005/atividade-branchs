@@ -38,6 +38,7 @@ function render(tasks = state.tasks) {
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx >= 0) {
         state.tasks[idx].completed = checkbox.checked;
+        save();
         li.classList.toggle('completed', checkbox.checked);
       }
     });
@@ -63,6 +64,7 @@ function render(tasks = state.tasks) {
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx >= 0) {
         state.tasks.splice(idx, 1);
+        save();
         li.remove();
       }
     });
