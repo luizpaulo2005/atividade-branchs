@@ -5,6 +5,23 @@ const state = {
   tasks: []
 };
 
+function save() {
+  try {
+    localStorage.setItem('todo.tasks', JSON.stringify(state.tasks));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem('todo.tasks');
+    if (raw) state.tasks = JSON.parse(raw);
+  } catch (e) {
+    state.tasks = [];
+  }
+}
+
 function render(tasks = state.tasks) {
   const list = document.getElementById('todo-list');
   list.innerHTML = '';
@@ -21,6 +38,7 @@ function render(tasks = state.tasks) {
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx >= 0) {
         state.tasks[idx].completed = checkbox.checked;
+        save();
         li.classList.toggle('completed', checkbox.checked);
       }
     });
@@ -46,6 +64,7 @@ function render(tasks = state.tasks) {
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx >= 0) {
         state.tasks.splice(idx, 1);
+        save();
         li.remove();
       }
     });
@@ -68,6 +87,7 @@ function setup() {
     }
     const task = { id: crypto.randomUUID(), title, completed: false };
     state.tasks.push(task);
+    save();
     input.value = '';
     render();
     input.focus();
@@ -81,6 +101,7 @@ function setup() {
     }
   });
 
+  load();
   render();
 }
 
