@@ -45,7 +45,17 @@ function setup() {
   const form = document.getElementById('todo-form');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    // Implementação virá na branch feature/add-task
+    const input = document.getElementById('new-task');
+    const title = (input.value || '').trim();
+    if (!title) {
+      input.focus();
+      return;
+    }
+    const task = { id: crypto.randomUUID(), title, completed: false };
+    state.tasks.push(task);
+    input.value = '';
+    render();
+    input.focus();
   });
 
   const filters = document.querySelector('.filters');
