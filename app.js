@@ -21,7 +21,7 @@ function render(tasks = state.tasks) {
       const idx = state.tasks.findIndex(x => x.id === id);
       if (idx >= 0) {
         state.tasks[idx].completed = checkbox.checked;
-        render();
+        li.classList.toggle('completed', checkbox.checked);
       }
     });
 
