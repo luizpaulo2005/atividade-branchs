@@ -56,6 +56,16 @@ function render(tasks = state.tasks) {
   }
 }
 
+function rerenderRespectingFilter() {
+  const active = document.querySelector('.filters button.active');
+  if (!active) return render();
+  const filter = active.getAttribute('data-filter');
+  if (filter === 'all') return render();
+  if (filter === 'active') return render(state.tasks.filter(t => !t.completed));
+  if (filter === 'completed') return render(state.tasks.filter(t => t.completed));
+  render();
+}
+
 function setup() {
   const form = document.getElementById('todo-form');
   form.addEventListener('submit', (e) => {
@@ -77,7 +87,11 @@ function setup() {
   filters.addEventListener('click', (e) => {
     if (e.target.matches('button[data-filter]')) {
       const filter = e.target.getAttribute('data-filter');
-      // Implementação virá na branch feature/filter-tasks
+      filters.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      if (filter === 'all') return render();
+      if (filter === 'active') return render(state.tasks.filter(t => !t.completed));
+      if (filter === 'completed') return render(state.tasks.filter(t => t.completed));
     }
   });
 
