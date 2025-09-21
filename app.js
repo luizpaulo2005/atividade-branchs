@@ -55,6 +55,7 @@ function setup() {
     state.tasks.push(task);
     input.value = '';
     render();
+    input.focus();
   });
 
   const filters = document.querySelector('.filters');
