@@ -16,7 +16,14 @@ function render(tasks = state.tasks) {
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = !!t.completed;
-    checkbox.disabled = true; // habilitado na feature correspondente
+    checkbox.addEventListener('change', () => {
+      const id = li.dataset.id;
+      const idx = state.tasks.findIndex(x => x.id === id);
+      if (idx >= 0) {
+        state.tasks[idx].completed = checkbox.checked;
+        li.classList.toggle('completed', checkbox.checked);
+      }
+    });
 
     const title = document.createElement('span');
     title.className = 'title';
