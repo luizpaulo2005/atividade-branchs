@@ -5,6 +5,23 @@ const state = {
   tasks: []
 };
 
+function save() {
+  try {
+    localStorage.setItem('todo.tasks', JSON.stringify(state.tasks));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem('todo.tasks');
+    if (raw) state.tasks = JSON.parse(raw);
+  } catch (e) {
+    state.tasks = [];
+  }
+}
+
 function render(tasks = state.tasks) {
   const list = document.getElementById('todo-list');
   list.innerHTML = '';
@@ -68,6 +85,7 @@ function setup() {
     }
     const task = { id: crypto.randomUUID(), title, completed: false };
     state.tasks.push(task);
+    save();
     input.value = '';
     render();
     input.focus();
@@ -81,6 +99,7 @@ function setup() {
     }
   });
 
+  load();
   render();
 }
 
